@@ -1,6 +1,7 @@
 package com.example.cryptoapp.api
 
 import CoinInfo
+import com.kurbatov.coingeckoapp.domain.CoinPriceInfo
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -12,7 +13,7 @@ interface ApiService {
         @Query(QUERY_PARAM_API_KEY) apiKey: String = "CG-pw2PDxEwTAXLXewoFJQercR3",
         @Query(QUERY_PARAM_LIMIT) limit: Int = 10,
         @Query(QUERY_PARAM_CURRENCY) vsCurrency: String = CURRENCY
-    ): Single<List<CoinInfo>>
+    ): Single<List<CoinPriceInfo>>
 
     companion object {
         private const val QUERY_PARAM_API_KEY = "x_cg_demo_api_key"

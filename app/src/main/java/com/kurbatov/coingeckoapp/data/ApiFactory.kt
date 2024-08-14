@@ -8,7 +8,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiFactory {
 
     private const val BASE_URL = "https://api.coingecko.com/"
-    const val BASE_IMAGE_URL = "https://coin-images.coingecko.com/coins/images/1/large/"
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
