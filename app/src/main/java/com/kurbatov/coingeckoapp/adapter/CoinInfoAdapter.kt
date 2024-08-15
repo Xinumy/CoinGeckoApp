@@ -3,9 +3,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cryptoapp.api.ApiService
 import com.kurbatov.coingeckoapp.R
 import com.kurbatov.coingeckoapp.databinding.ItemCoinInfoBinding
 import com.kurbatov.coingeckoapp.domain.CoinPriceInfo
+import com.kurbatov.coingeckoapp.presentation.CoinPriceListActivity.Companion.currentSelectedCurrency
 import com.squareup.picasso.Picasso
 
 class CoinInfoAdapter(private val context: Context) :
@@ -32,8 +34,15 @@ class CoinInfoAdapter(private val context: Context) :
         with(holder) {
             with(coin) {
                 textViewName.text = name.toString()
-                tvSymbols.text = symbols.toString()
-                tvPrice.text = price.toString()
+                tvSymbols.text = symbols.toString().uppercase()
+                var currencySymbol = "$ "
+                if(currentSelectedCurrency == "rub" ){
+                    currencySymbol = "₽ "
+                }
+                tvPrice.text = buildString {
+                    append(currencySymbol)
+                    append(price.toString())
+                }
                 val number = price_change_percentage_24h?.toDoubleOrNull()
                 val roundedPercentage = String.format("%.2f", number)
                 val signedNumber = if (number!! >= 0) "+$roundedPercentage%" else "$roundedPercentage%"

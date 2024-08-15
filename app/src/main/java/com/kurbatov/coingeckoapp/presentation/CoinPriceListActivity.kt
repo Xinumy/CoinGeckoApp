@@ -1,6 +1,5 @@
 package com.kurbatov.coingeckoapp.presentation
 
-import CoinInfo
 import CoinInfoAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,8 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.kurbatov.coingeckoapp.R
 import com.kurbatov.coingeckoapp.databinding.ActivityCoinPriceListBinding
 import com.kurbatov.coingeckoapp.domain.CoinPriceInfo
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 class CoinPriceListActivity : AppCompatActivity() {
 
@@ -35,10 +32,25 @@ class CoinPriceListActivity : AppCompatActivity() {
         with(binding!!.recyclerViewCoinPriceList) {
             adapter = coinInfoAdapter
         }
+
+
         viewModel = ViewModelProvider(this)[CoinPriceListViewModel::class.java]
         viewModel.priceList.observe(this, Observer {
             coinInfoAdapter.coinInfoList = it
             Log.d(myLog, "Success in activity: $it")
         })
+
+        binding!!.chipCurrencyGroup.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.chipUSD -> currentSelectedCurrency = "usd"
+                R.id.chipRUB -> currentSelectedCurrency = "rub"
+            }
+            viewModel.setCurrencySymbol(currentSelectedCurrency)
+        }
+
+    }
+
+    companion object {
+        var currentSelectedCurrency = "usd"
     }
 }

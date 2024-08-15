@@ -6,14 +6,64 @@
     android:layout_height="match_parent"
     tools:context=".presentation.CoinPriceListActivity">
 
+
+    <LinearLayout
+        android:id="@+id/linearlayoutTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="117dp"
+        android:background="@drawable/top_bar_background"
+        android:gravity="left"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/ListOfCryptoTitle"
+            android:textSize="20sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipCurrencyGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipUSD"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="89dp"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="USD"
+                android:textAlignment="center" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipRUB"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="89dp"
+                android:layout_height="wrap_content"
+                android:text="RUB"
+                android:textAlignment="center" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCoinPriceList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_coin_info"
-        tools:itemCount="15"
+        app:layout_constraintTop_toBottomOf="@+id/linearlayoutTopBar"
+        tools:itemCount="25"
 
-        />
+        tools:listitem="@layout/item_coin_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

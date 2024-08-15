@@ -25,7 +25,7 @@ data class CoinPriceInfo (
     val price_change_percentage_24h: String? = null,
     @SerializedName("image")
     @Expose
-    val imageUrl: String?
+    val imageUrl: String?,
 ){
 
 }

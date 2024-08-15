@@ -1,6 +1,5 @@
 package com.example.cryptoapp.api
 
-import CoinInfo
 import com.kurbatov.coingeckoapp.domain.CoinPriceInfo
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
@@ -11,7 +10,7 @@ interface ApiService {
 
     fun getCoinsInfo(
         @Query(QUERY_PARAM_API_KEY) apiKey: String = "CG-pw2PDxEwTAXLXewoFJQercR3",
-        @Query(QUERY_PARAM_LIMIT) limit: Int = 10,
+        @Query(QUERY_PARAM_LIMIT) limit: Int = 20,
         @Query(QUERY_PARAM_CURRENCY) vsCurrency: String = CURRENCY
     ): Single<List<CoinPriceInfo>>
 
