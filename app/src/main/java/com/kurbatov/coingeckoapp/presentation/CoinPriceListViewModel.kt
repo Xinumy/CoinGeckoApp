@@ -1,6 +1,5 @@
 package com.kurbatov.coingeckoapp.presentation
 
-import CoinInfo
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -18,15 +17,14 @@ class CoinPriceListViewModel (application: Application) : AndroidViewModel(appli
 
     val priceList = db.coinPriceInfoDao().getPriceList()
 
+    private var currencySymbol = "usd"
+
     init{
         loadData()
     }
 
     private fun loadData() {
-        val disposable = ApiFactory.apiService.getCoinsInfo(vsCurrency = "usd")
-            .delaySubscription(5, TimeUnit.SECONDS)
-            .repeat()
-            .retry()
+        val disposable = ApiFactory.apiService.getCoinsInfo(vsCurrency = currencySymbol)
             .subscribeOn(Schedulers.io())
             .subscribe({
                 db.coinPriceInfoDao().insertPriceList(it)
@@ -35,6 +33,11 @@ class CoinPriceListViewModel (application: Application) : AndroidViewModel(appli
                 Log.d("TEST_OF_LOADING_DATA", it.toString())
             })
         compositeDisposable.add(disposable)
+    }
+
+    public fun setCurrencySymbol (currencySymbol: String){
+        this.currencySymbol = currencySymbol
+        loadData()
     }
 
 }
