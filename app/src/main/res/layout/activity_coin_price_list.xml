@@ -66,4 +66,18 @@
 
         tools:listitem="@layout/item_coin_info" />
 
+    <ProgressBar
+        android:id="@+id/progressBarLoadingCoinPriceList"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/orange_dark"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

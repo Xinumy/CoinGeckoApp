@@ -1,9 +1,10 @@
 package com.kurbatov.coingeckoapp.presentation
 
 import CoinInfoAdapter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.kurbatov.coingeckoapp.R
@@ -25,7 +26,11 @@ class CoinPriceListActivity : AppCompatActivity() {
         val coinInfoAdapter = CoinInfoAdapter(this)
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coinPriceInfo: CoinPriceInfo) {
-
+                val intent = CoinDetailActivity.newIntent(
+                    this@CoinPriceListActivity,
+                    coinPriceInfo.id
+                )
+                startActivity(intent)
             }
         }
 
@@ -33,12 +38,16 @@ class CoinPriceListActivity : AppCompatActivity() {
             adapter = coinInfoAdapter
         }
 
-
         viewModel = ViewModelProvider(this)[CoinPriceListViewModel::class.java]
         viewModel.priceList.observe(this, Observer {
             coinInfoAdapter.coinInfoList = it
             Log.d(myLog, "Success in activity: $it")
         })
+
+        viewModel.getIsLoading().observe(this) { isLoading ->
+            binding?.progressBarLoadingCoinPriceList?.visibility =
+                if (isLoading == true) View.VISIBLE else View.GONE
+        }
 
         binding!!.chipCurrencyGroup.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
@@ -47,7 +56,6 @@ class CoinPriceListActivity : AppCompatActivity() {
             }
             viewModel.setCurrencySymbol(currentSelectedCurrency)
         }
-
     }
 
     companion object {

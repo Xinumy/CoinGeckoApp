@@ -7,16 +7,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.cryptoapp.api.ApiFactory
 import com.kurbatov.coingeckoapp.data.AppDatabase
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import com.kurbatov.coingeckoapp.domain.CoinDetailInfo
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class CoinPriceListViewModel (application: Application) : AndroidViewModel(application) {
+class CoinDetailViewModel (application: Application) : AndroidViewModel(application) {
 
     private val db = AppDatabase.getInstance(application)
     private val compositeDisposable = CompositeDisposable()
 
-    val priceList = db.coinPriceInfoDao().getPriceList()
+    private val coinDetailInfo = MutableLiveData<CoinDetailInfo>()
+
+    fun getCoinDetailInfo(): LiveData<CoinDetailInfo> {
+        return coinDetailInfo
+    }
 
     private val isLoading = MutableLiveData(false)
 
@@ -24,14 +28,8 @@ class CoinPriceListViewModel (application: Application) : AndroidViewModel(appli
         return isLoading
     }
 
-    private var currencySymbol = "usd"
-
-    init{
-        loadData()
-    }
-
-    private fun loadData() {
-        val disposable = ApiFactory.apiService.getCoinsInfo(vsCurrency = currencySymbol)
+    fun loadDetailData(currentId : String) {
+        val disposable = ApiFactory.apiService.getCoinDetailInfo(id = currentId)
             .subscribeOn(Schedulers.io())
             .doOnSubscribe {
                 isLoading.postValue(true)
@@ -40,17 +38,13 @@ class CoinPriceListViewModel (application: Application) : AndroidViewModel(appli
                 isLoading.postValue(false)
             }
             .subscribe({
-                db.coinPriceInfoDao().insertPriceList(it)
-                Log.d("TEST_OF_LOADING_DATA", "Success: $it")
+                coinDetailInfo.postValue(it)
+                //db.coinDetailInfoDao().insertDetailInfo(it)
+
+                Log.d("TEST_OF_LOADING_DATA", it.toString())
             }, {
-                db.coinPriceInfoDao().clearPriceList()
                 Log.d("TEST_OF_LOADING_DATA", it.toString())
             })
         compositeDisposable.add(disposable)
-    }
-
-    public fun setCurrencySymbol (currencySymbol: String){
-        this.currencySymbol = currencySymbol
-        loadData()
     }
 }
