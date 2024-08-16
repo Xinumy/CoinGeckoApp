@@ -19,6 +19,8 @@ class CoinInfoAdapter(private val context: Context) :
             notifyDataSetChanged()
         }
 
+    var currentId: String = ""
+
     var onCoinClickListener: OnCoinClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinInfoViewHolder {
@@ -33,6 +35,7 @@ class CoinInfoAdapter(private val context: Context) :
         val coin = coinInfoList[position]
         with(holder) {
             with(coin) {
+                currentId = id
                 textViewName.text = name.toString()
                 tvSymbols.text = symbols.toString().uppercase()
                 var currencySymbol = "$ "
