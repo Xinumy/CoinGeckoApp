@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.kurbatov.coingeckoapp.R
 import com.kurbatov.coingeckoapp.databinding.ActivityCoinPriceListBinding
 import com.kurbatov.coingeckoapp.domain.CoinPriceInfo
@@ -15,6 +17,8 @@ class CoinPriceListActivity : AppCompatActivity() {
 
     private lateinit var viewModel: CoinPriceListViewModel
     private var binding: ActivityCoinPriceListBinding? = null
+
+    private var pullToRefresh = false
 
     private val myLog = "MyLog"
 
@@ -47,14 +51,45 @@ class CoinPriceListActivity : AppCompatActivity() {
         viewModel.getIsLoading().observe(this) { isLoading ->
             binding?.progressBarLoadingCoinPriceList?.visibility =
                 if (isLoading == true) View.VISIBLE else View.GONE
+            if (pullToRefresh && isLoading == false) {
+                binding?.swipeRefreshLayout?.isRefreshing = false
+                pullToRefresh = false
+            }
         }
 
-        viewModel.getIsLoadingFail().observe(this) { isLoading ->
-            binding?.linearLayoutConnectionFailed?.visibility =
-                if (isLoading == true) View.VISIBLE else View.GONE
+        viewModel.getIsLoadingFail().observe(this) { isLoadingFail ->
+            if (isLoadingFail) {
+                if (pullToRefresh) {
+                    binding?.swipeRefreshLayout?.isRefreshing = false
+                    pullToRefresh = false
+                    binding?.root?.let {
+                        Snackbar.make(
+                            it,
+                            "Произошла ошибка при загрузке",
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setBackgroundTint(ContextCompat.getColor(this, R.color.snackbar_red))
+                            .setTextColor(ContextCompat.getColor(this, R.color.white))
+                            .show()
+                    }
+                    binding?.recyclerViewCoinPriceList?.visibility = View.VISIBLE
+                    binding?.linearLayoutConnectionFailed?.visibility = View.GONE
+                } else {
+                    binding?.recyclerViewCoinPriceList?.visibility = View.GONE
+                    binding?.linearLayoutConnectionFailed?.visibility = View.VISIBLE
+                }
+            } else {
+                binding?.recyclerViewCoinPriceList?.visibility = View.VISIBLE
+                binding?.linearLayoutConnectionFailed?.visibility = View.GONE
+            }
         }
 
-        binding?.buttonReconnect?.setOnClickListener{
+        binding?.buttonReconnect?.setOnClickListener {
+            viewModel.loadData()
+        }
+
+        binding?.swipeRefreshLayout?.setOnRefreshListener {
+            pullToRefresh = true
             viewModel.loadData()
         }
 

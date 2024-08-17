@@ -49,7 +49,6 @@ class CoinPriceListViewModel (application: Application) : AndroidViewModel(appli
                 isLoadingFail.postValue(false)
                 Log.d("TEST_OF_LOADING_DATA", "Success: $it")
             }, {
-                db.coinPriceInfoDao().clearPriceList()
                 isLoadingFail.postValue(true)
                 Log.d("TEST_OF_LOADING_DATA", it.toString())
             })
