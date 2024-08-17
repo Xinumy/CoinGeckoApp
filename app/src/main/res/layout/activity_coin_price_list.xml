@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:color ="@color/white"
+    android:color="@color/white"
     tools:context=".presentation.CoinPriceListActivity">
 
 
@@ -61,16 +61,23 @@
 
     </LinearLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCoinPriceList"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/linearlayoutTopBar"
-        tools:itemCount="25"
+        android:layout_height="0dp">
 
-        tools:listitem="@layout/item_coin_info" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCoinPriceList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/linearlayoutTopBar"
+            tools:itemCount="25"
+
+            tools:listitem="@layout/item_coin_info" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progressBarLoadingCoinPriceList"
@@ -124,5 +131,4 @@
             android:textColor="@color/white" />
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
