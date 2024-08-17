@@ -42,6 +42,7 @@ class CoinPriceListActivity : AppCompatActivity() {
             adapter = coinInfoAdapter
         }
 
+
         viewModel = ViewModelProvider(this)[CoinPriceListViewModel::class.java]
         viewModel.priceList.observe(this, Observer {
             coinInfoAdapter.coinInfoList = it
