@@ -2,12 +2,16 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.CoinGeckoApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
+        <item name="android:statusBarColor">@color/grey_status_bar</item>
+        <item name="colorPrimary">@color/white</item>
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="TopBarChipStyle" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="chipBackgroundColor">@drawable/chip_background_selector</item>
+    <style name="TopBarChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/chip_background_selector</item>
+        <item name="android:textColor">@color/chip_text_selector</item>
     </style>
 
     <style name="Theme.CoinGeckoApp" parent="Base.Theme.CoinGeckoApp" />
+
 </resources>

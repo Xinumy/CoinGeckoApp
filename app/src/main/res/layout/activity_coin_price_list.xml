@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:color ="@color/white"
     tools:context=".presentation.CoinPriceListActivity">
 
 
@@ -22,6 +23,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:padding="16dp"
             android:text="@string/ListOfCryptoTitle"
             android:textSize="20sp" />
@@ -36,20 +38,24 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipUSD"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+                style="@style/TopBarChipStyle"
                 android:layout_width="89dp"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="USD"
-                android:textAlignment="center" />
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/usd"
+                android:textAlignment="center"
+                android:textSize="14sp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipRUB"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+                style="@style/TopBarChipStyle"
                 android:layout_width="89dp"
                 android:layout_height="wrap_content"
-                android:text="RUB"
-                android:textAlignment="center" />
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/rub"
+                android:textAlignment="center"
+                android:textSize="14sp" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -79,5 +85,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutConnectionFailed"
+        android:layout_width="230dp"
+        android:layout_height="237dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearlayoutTopBar"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bitcoin_image" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/error_coin_price_list"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonReconnect"
+            android:layout_width="175dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/try_again_button"
+            android:text="@string/try_again_button"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
