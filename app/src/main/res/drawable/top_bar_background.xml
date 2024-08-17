@@ -6,7 +6,7 @@
         <shape>
             <stroke
                 android:width="2dp"
-                android:color="#7000" />
+                android:color="@color/black_light" />
             <padding
                 android:bottom="3dp" />
         </shape>

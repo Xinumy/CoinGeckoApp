@@ -11,7 +11,7 @@ import com.kurbatov.coingeckoapp.domain.CoinDetailInfo
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class CoinDetailViewModel (application: Application) : AndroidViewModel(application) {
+class CoinDetailViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = AppDatabase.getInstance(application)
     private val compositeDisposable = CompositeDisposable()
@@ -28,7 +28,13 @@ class CoinDetailViewModel (application: Application) : AndroidViewModel(applicat
         return isLoading
     }
 
-    fun loadDetailData(currentId : String) {
+    private val isLoadingFail = MutableLiveData(false)
+
+    fun getIsLoadingFail(): LiveData<Boolean> {
+        return isLoadingFail
+    }
+
+    fun loadDetailData(currentId: String) {
         val disposable = ApiFactory.apiService.getCoinDetailInfo(id = currentId)
             .subscribeOn(Schedulers.io())
             .doOnSubscribe {
@@ -39,10 +45,10 @@ class CoinDetailViewModel (application: Application) : AndroidViewModel(applicat
             }
             .subscribe({
                 coinDetailInfo.postValue(it)
-                //db.coinDetailInfoDao().insertDetailInfo(it)
-
+                isLoadingFail.postValue(false)
                 Log.d("TEST_OF_LOADING_DATA", it.toString())
             }, {
+                isLoadingFail.postValue(true)
                 Log.d("TEST_OF_LOADING_DATA", it.toString())
             })
         compositeDisposable.add(disposable)

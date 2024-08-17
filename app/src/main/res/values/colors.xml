@@ -9,5 +9,6 @@
     <color name="orange_dark">#FFAD25</color>
     <color name="green_light">#2A9D8F</color>
     <color name="red_light">#EB5757</color>
+    <color name="grey_status_bar">#E8E8E8</color>
 
 </resources>

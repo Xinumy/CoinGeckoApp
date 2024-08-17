@@ -2,5 +2,9 @@
     <string name="app_name">CoinGeckoApp</string>
     <string name="price">$ </string>
     <string name="ListOfCryptoTitle">Список криптовалют</string>
+    <string name="error_coin_price_list">Произошла какая-то ошибка :( \n Попробуем снова?</string>
+    <string name="try_again_button">Попробовать</string>
+    <string name="rub">RUB</string>
+    <string name="usd">USD</string>
 
 </resources>

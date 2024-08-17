@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.cryptoapp.api.ApiFactory
 import com.kurbatov.coingeckoapp.data.AppDatabase
+import com.kurbatov.coingeckoapp.presentation.CoinPriceListActivity.Companion.currentSelectedCurrency
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -24,14 +25,18 @@ class CoinPriceListViewModel (application: Application) : AndroidViewModel(appli
         return isLoading
     }
 
-    private var currencySymbol = "usd"
+    private val isLoadingFail = MutableLiveData(false)
+
+    fun getIsLoadingFail(): LiveData<Boolean> {
+        return isLoadingFail
+    }
 
     init{
         loadData()
     }
 
-    private fun loadData() {
-        val disposable = ApiFactory.apiService.getCoinsInfo(vsCurrency = currencySymbol)
+    fun loadData() {
+        val disposable = ApiFactory.apiService.getCoinsInfo(vsCurrency = currentSelectedCurrency)
             .subscribeOn(Schedulers.io())
             .doOnSubscribe {
                 isLoading.postValue(true)
@@ -41,16 +46,13 @@ class CoinPriceListViewModel (application: Application) : AndroidViewModel(appli
             }
             .subscribe({
                 db.coinPriceInfoDao().insertPriceList(it)
+                isLoadingFail.postValue(false)
                 Log.d("TEST_OF_LOADING_DATA", "Success: $it")
             }, {
                 db.coinPriceInfoDao().clearPriceList()
+                isLoadingFail.postValue(true)
                 Log.d("TEST_OF_LOADING_DATA", it.toString())
             })
         compositeDisposable.add(disposable)
-    }
-
-    public fun setCurrencySymbol (currencySymbol: String){
-        this.currencySymbol = currencySymbol
-        loadData()
     }
 }
